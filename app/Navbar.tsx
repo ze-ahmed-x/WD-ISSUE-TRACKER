@@ -19,7 +19,7 @@ const Navbar = () => {
         <ul className='flex space-x-6 '>
             {links.map(link => (
                 <>
-                <li className={
+                <li key ={link.href} className={
                     // `${link.href === currentPath? 'text-zinc-800' : 'text-zinc-500' } hover:text-zinc-800 transition-colors`
                     classNames(
                         {
@@ -29,8 +29,8 @@ const Navbar = () => {
                         }
 
                     )
-                } 
-                key={link.name}>
+                }
+                >
                     <Link href={link.href}>{link.name}</Link>
                 </li>
                 <Separator className='self-center' orientation="vertical" />
