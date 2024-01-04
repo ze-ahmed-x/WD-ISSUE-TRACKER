@@ -18,26 +18,24 @@ const Navbar = () => {
         <Link href='/'><IoBug /></Link>
         <ul className='flex space-x-6 '>
             {links.map(link => (
-                <>
-                <li key ={link.href} className={
+                <li key ={link.name} className={
                     // `${link.href === currentPath? 'text-zinc-800' : 'text-zinc-500' } hover:text-zinc-800 transition-colors`
                     classNames(
                         {
                             'text-zinc-900': link.href === currentPath,
                             'text-zinc-500': link.href!== currentPath,
-                            'hover:text-zinc-800 transition-colors': true
+                            'hover:text-zinc-800 transition-colors': true,
+                            'flex': true,
+                            'space-x-3': true
                         }
 
                     )
                 }
                 >
-                    <Link href={link.href}>{link.name}</Link>
-                </li>
                 <Separator className='self-center' orientation="vertical" />
-                </>
+                <Link href={link.href}>{link.name}</Link>
+                </li>
             ))}
-            {/* <li><Link href=`/'>Dashboard</Link></li>
-            <li><Link href='/issues'>Issues</Link></li> */}
         </ul>
     </nav>
   )
