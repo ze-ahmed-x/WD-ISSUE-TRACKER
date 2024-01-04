@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/ValidationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 // interface IssueForm {
@@ -19,12 +20,14 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 
 const CreateNewIssue = () => {
     const router = useRouter();
-    const { register, control, handleSubmit, formState : {errors} } = useForm<IssueForm>({resolver: zodResolver(createIssueSchema)});
+    const { register, control, handleSubmit, formState: { errors } } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
     const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const saveFormData = async (formData: IssueForm) => {
         try {
             setError('');
+            setIsSubmitting(true);
             const response = await fetch("/api/issues", {
                 method: "POST",
                 headers: {
@@ -34,11 +37,14 @@ const CreateNewIssue = () => {
             });
             if (!response.ok) {
                 setError("Please check if the input is valid");
+                setIsSubmitting(false);
                 return;
             }
+            setIsSubmitting(false);
             router.push("/issues");
         } catch (error) {
             console.error(error);
+            setIsSubmitting(false);
         }
     };
     return (
@@ -66,8 +72,8 @@ const CreateNewIssue = () => {
 
                 {/* {errors.description && <Text as='p' color='red'>{errors.description.message}</Text>} */}
                 <ErrorMessage>{errors.description?.message} </ErrorMessage>
-                
-                <Button>Submit New Issue</Button>
+
+                <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner />}</Button>
             </form>
         </div>
     )
